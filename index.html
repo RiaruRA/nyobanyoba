@@ -3,40 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Sayanggg!</title>
-    <!-- Load Tailwind CSS -->
+    <title>Happy Birthday Sayanggg! 💖</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Use Inter font -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        
-        /* FIX: Ensure HTML element uses full available height */
-        html {
-            /* Dihapus: height: 100%; agar tidak membatasi tinggi secara kaku */
-        }
 
-        /* Apply font globally and set up the background */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a1a2e; /* Deep purple background */
+            background-color: #1a1a2e;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Perubahan: Gunakan min-height: 100vh agar konten tetap terpusat
-               tetapi jika konten melebihi 100% tinggi layar, scrolling diizinkan. */
-            min-height: 100vh; 
-            /* Dihapus: height: 100vh; yang mencegah konten bertambah tinggi */
+            min-height: 100vh;
             margin: 0;
-            /* Dihapus: overflow: hidden; untuk mengizinkan scrolling */
         }
 
-        /* Custom animation for text entry */
         @keyframes fadeInScale {
             0% { transform: scale(0.95); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-        
-        /* Custom animation for the main heading (kept for entrance) */
+
         @keyframes bounceIn {
             0% { transform: scale(0.5) translateY(-50px); opacity: 0; }
             60% { transform: scale(1.1) translateY(10px); opacity: 1; }
@@ -44,7 +30,6 @@
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
-        /* Class for page transition effect */
         .card-content {
             animation: fadeInScale 0.5s ease-out forwards;
         }
@@ -52,73 +37,67 @@
         .birthday-text {
             animation: bounceIn 1.2s ease-out forwards;
         }
-        
-        /* Confetti styling removed previously */
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #open-button {
+            animation: pulse 1.5s infinite;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Background Audio Element -->
-    <!-- Autoplay diatur ke 'muted' karena sebagian besar browser memblokir autoplay 
-         audio yang tidak dibisukan tanpa interaksi pengguna. -->
-    <audio id="background-music" loop autoplay>
-        <!-- PENTING: GANTI source src ini dengan tautan langsung file MP3 lagu LANY "No". -->
+    <!-- MUSIC -->
+    <audio id="background-music" loop muted>
         <source src="Lany-no.m4a" type="audio/mp4">
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Birthday Card Container -->
-    <div class="relative max-w-lg mx-4 w-full bg-white bg-opacity-10 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl border border-pink-400 border-opacity-30 text-center z-10">
+    <!-- OPEN BUTTON -->
+    <button id="open-button" class="fixed z-20 px-8 py-4 bg-pink-600 text-white text-xl font-bold rounded-full shadow-2xl transition duration-300 hover:bg-pink-500 transform hover:scale-105">
+        Klik disini yaa sayanggg! 🎶
+    </button>
 
-        <!-- Music Toggle Button (Top Right) -->
+    <!-- CARD -->
+    <div id="card-container" class="hidden relative max-w-lg mx-4 w-full bg-white bg-opacity-10 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl border border-pink-400 border-opacity-30 text-center z-10">
+
+        <div class="mb-6">
+            <img src="https://images.wondershare.com/filmora/article-images/2021/happy-birthday-to-you-minions.gif" alt="Cute animated happy birthday GIF" class="mx-auto w-32 h-32 rounded-full object-cover shadow-xl border-4 border-pink-400/50">
+        </div>
+
+        <!-- MUSIC TOGGLE -->
         <button id="music-toggle" class="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition duration-200" title="Toggle Music">
-            <!-- Ikon Muted (default) -->
             <svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 5.343a1 1 0 010 1.414l-8 8a1 1 0 01-1.414-1.414l8-8a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
-            <!-- Ikon Playing -->
             <svg id="icon-playing" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v4a1 1 0 11-2 0V8z" />
             </svg>
         </button>
 
-        <!-- Dynamic Content Area -->
-        <div id="card-content" class="min-h-[250px] flex flex-col justify-between">
-            <!-- Content will be injected here by JavaScript -->
-        </div>
+        <div id="card-content" class="min-h-[250px] flex flex-col justify-between"></div>
 
-        <!-- Navigation Button Controls -->
-        <!-- Mengubah kelas tata letak agar tombol navigasi terpusat -->
         <div class="mt-8 flex justify-center">
-            
-            <!-- Navigation Buttons Container -->
-            <div id="navigation-controls" class="flex space-x-3 w-full sm:w-auto items-center">
-                <!-- Buttons will be injected here by JavaScript based on page -->
-            </div>
-
+            <div id="navigation-controls" class="flex space-x-3 w-full sm:w-auto items-center"></div>
         </div>
-
     </div>
 
     <script>
-        // Global variables for Firebase access (required by platform, even if not used)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const authToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
         let currentPage = 0;
 
-        // Data structure for multiple, longer wishes
         const wishes = [
             {
-                title: "Happy Birthday!",
-                subtitle: "To My Beloved Girlfriend!",
+                title: "Happy Birthday! 🎂",
+                subtitle: "To My Beloved Girlfriend! 🥰",
                 message: "Selamat ulang tahun yang ke-24, Sayang! Happy Level Up Day! 🎉Nggak kerasa, ya, kamu udah 24 tahun, aku harap semua kerja kerasmu selama ini mulai membuahkan hasil yang manis. Semoga di tahun ini semua impian yang kamu simpan di kepala bisa satu per satu terwujud, dan pintu rezeki terbuka lebar buat kamuuu.",
                 signature: ""
             },
             {
                 title: "",
-                subtitle: "",
+                subtitle: "Semangat Terus ya Sayangku! ",
                 message: "Di Umur ke-23 kamu udah banyak ngelewatin rintangan, dari kita yang nyiapin buat sidang bareng, revisian sampe wisudaa kita bareng, meskipun aku jarang ada disamping kamu bahkan aku sering buat kecewa kamu, tapi aku yakin kamu bisa ngelewatin itu semuaa and you did it bebee!! aku berharap semoga di umur kamu yang baru ini kamu bisa semakin dewasa, dan aku harap kamu bisa melewati semua masalah yang akan ada nanti.",
                 signature: ""
             },
@@ -126,89 +105,69 @@
                 title: "",
                 subtitle: "",
                 message: "Aku berharap kamu selalu merasa bahagia. Jangan terlalu banyak overthinking ya sayangggg! Ingat, kamu punya banyak support system (terutama aku, hihi!) yang selalu siap di belakangmu! Sekali lagi selamat Ulang tahun yaa sayangg semogaaa kita bisa terus membersamai dan jugaa happy terus sayanggg, i'm so proud of you bebeeee. Love You Sayangggg💕💕",
-                signature: "- From your Annoying boyfriend"
+                signature: "From your annoying boyfriend 🫶"
             }
-            // Pesan LANY Vibe telah dihapus
         ];
 
         const cardContentEl = document.getElementById('card-content');
         const navigationControlsEl = document.getElementById('navigation-controls');
-        
-        // --- NEW AUDIO ELEMENTS ---
         const musicToggleBtn = document.getElementById('music-toggle');
         const audioEl = document.getElementById('background-music');
         const iconMuted = document.getElementById('icon-muted');
         const iconPlaying = document.getElementById('icon-playing');
+        const openButtonEl = document.getElementById('open-button');
+        const cardContainerEl = document.getElementById('card-container');
 
-        /**
-         * Renders the content of the current wish onto the card.
-         */
+        // 🎵 Open button event: tampilkan kartu & play musik
+        openButtonEl.addEventListener('click', () => {
+            cardContainerEl.classList.remove('hidden');
+            openButtonEl.classList.add('hidden');
+            audioEl.muted = false;
+            audioEl.play();
+            renderCardContent();
+        });
+
+        // 🎧 Toggle Music
+        musicToggleBtn.addEventListener('click', () => {
+            if (audioEl.paused) {
+                audioEl.play();
+                iconMuted.classList.add('hidden');
+                iconPlaying.classList.remove('hidden');
+            } else {
+                audioEl.pause();
+                iconMuted.classList.remove('hidden');
+                iconPlaying.classList.add('hidden');
+            }
+        });
+
+        // 🧡 Render Konten Kartu
         function renderCardContent() {
             const currentWish = wishes[currentPage];
             const isLastPage = currentPage === wishes.length - 1;
 
-            // 1. Build the new HTML content for the card body
-            const cardBodyHtml = `
-                <!-- Main Heading (dynamic) -->
-                <h1 class="card-content text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-red-600 mb-6">
-                    ${currentWish.title}
-                </h1>
-
-                <!-- Sub-message (dynamic) -->
-                <p class="card-content text-white text-2xl sm:text-3xl font-bold mb-4">
-                    ${currentWish.subtitle}
-                </p>
-                
-                <!-- Personalized Message (dynamic and longer) -->
-                <p class="card-content text-gray-200 text-lg mb-8 leading-relaxed">
-                    ${currentWish.message}
-                </p>
-
-                <!-- Signature (dynamic) -->
-                <p class="card-content text-pink-300 text-xl font-semibold italic">
-                    ${currentWish.signature}
-                </p>
+            cardContentEl.innerHTML = `
+                <h1 class="card-content text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-red-600 mb-6">${currentWish.title}</h1>
+                <p class="card-content text-white text-2xl font-bold mb-4">${currentWish.subtitle}</p>
+                <p class="card-content text-gray-200 text-lg mb-8 leading-relaxed">${currentWish.message}</p>
+                <p class="card-content text-pink-300 text-xl font-semibold italic">${currentWish.signature}</p>
             `;
 
-            // Insert the card body content
-            cardContentEl.innerHTML = cardBodyHtml;
-
-            // 2. Build the navigation controls dynamically
+            // tombol navigasi
             let navHtml = '';
-
             if (isLastPage) {
-                // Tampilkan tombol Refresh/Kembali ke Awal di halaman terakhir
                 navHtml = `
-                    <button class="px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-gray-900 font-bold rounded-full shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 w-full sm:w-auto" onclick="goToFirstWish()">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0110.806 6.324A1.655 1.655 0 0015 9a1 1 0 110 2c-.052 0-.104.004-.156.012a9.002 9.002 0 00-14.887 2.673c-.015.064-.029.129-.042.193a1 1 0 01-1.896-.693 11.002 11.002 0 0118.99-3.704A9.01 9.01 0 005 3a1 1 0 01-1-1z" clip-rule="evenodd" />
-                        </svg>
-                        Back To The First
-                    </button>
+                    <button onclick="goToFirstWish()" class="px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-gray-900 font-bold rounded-full shadow-lg hover:scale-105 transition">🔄 Back To The First</button>
                 `;
             } else {
-                // Tampilkan tombol Previous dan Next di halaman 1 dan 2
-                const prevDisabled = currentPage === 0;
-                const nextDisabled = currentPage === wishes.length - 1;
-
                 navHtml = `
-                    <button id="prev-button" class="px-4 py-2 bg-pink-600 text-white font-semibold rounded-full transition duration-300 hover:bg-pink-500 ${prevDisabled ? 'opacity-50 cursor-not-allowed' : ''}" onclick="changeWish(-1)" ${prevDisabled ? 'disabled' : ''}>
-                        &larr; Previous
-                    </button>
-                    <button id="next-button" class="px-4 py-2 bg-pink-600 text-white font-semibold rounded-full transition duration-300 hover:bg-pink-500 ${nextDisabled ? 'opacity-50 cursor-not-allowed' : ''}" onclick="changeWish(1)" ${nextDisabled ? 'disabled' : ''}>
-                        Next &rarr;
-                    </button>
+                    <button onclick="changeWish(-1)" ${currentPage === 0 ? 'disabled class="opacity-50 cursor-not-allowed px-4 py-2 bg-pink-600 text-white rounded-full"' : 'class="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-500 transition"'}>&larr; Previous</button>
+                    <button onclick="changeWish(1)" class="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-500 transition">Next &rarr;</button>
                 `;
             }
 
-            // Insert the navigation controls
             navigationControlsEl.innerHTML = navHtml;
         }
 
-        /**
-         * Changes the current page and re-renders the card content.
-         * @param {number} direction - 1 for next, -1 for previous.
-         */
         function changeWish(direction) {
             const newPage = currentPage + direction;
             if (newPage >= 0 && newPage < wishes.length) {
@@ -216,77 +175,11 @@
                 renderCardContent();
             }
         }
-        
-        /**
-         * Resets the page view to the first wish.
-         */
+
         function goToFirstWish() {
             currentPage = 0;
             renderCardContent();
         }
-
-        // --- NEW AUDIO LOGIC ---
-
-        /**
-         * Toggles the background music state (muted/unmuted, playing/paused).
-         */
-        function toggleMusic() {
-            if (audioEl.paused) {
-                // Try to play (user interaction allows unmuting)
-                audioEl.muted = false;
-                audioEl.play().catch(error => {
-                    console.error('Error attempting to play audio:', error);
-                    // If play fails (e.g., source not found), keep muted or stop
-                    audioEl.muted = true;
-                    updateMusicIcon(true);
-                });
-                updateMusicIcon(false);
-            } else if (audioEl.muted) {
-                // Unmute and continue playing
-                audioEl.muted = false;
-                updateMusicIcon(false);
-            } else {
-                // Mute
-                audioEl.muted = true;
-                updateMusicIcon(true);
-            }
-        }
-        
-        /**
-         * Updates the visual icon based on the music state.
-         * @param {boolean} isMuted - true if currently muted or paused.
-         */
-        function updateMusicIcon(isMuted) {
-            if (isMuted) {
-                iconMuted.classList.remove('hidden');
-                iconPlaying.classList.add('hidden');
-            } else {
-                iconMuted.classList.add('hidden');
-                iconPlaying.classList.remove('hidden');
-            }
-        }
-
-        // Attach event listener to the toggle button
-        musicToggleBtn.addEventListener('click', toggleMusic);
-
-        // Initial setup on window load
-        window.onload = function() {
-            // Render the first wish
-            renderCardContent();
-
-            // Set initial icon state (it starts muted)
-            updateMusicIcon(true);
-
-            // Attempt to play muted audio on load (required for autoplay functionality)
-            audioEl.play().catch(error => {
-                // If the browser strictly blocks even muted autoplay, just log
-                console.log("Autoplay was prevented by the browser.");
-            });
-        };
-
     </script>
 </body>
 </html>
-
-
-
