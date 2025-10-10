@@ -5,32 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Happy Birthday Sayanggg! 💖</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
     body {
-      font-family: "Inter", sans-serif;
-      background: linear-gradient(135deg, #1a1a2e, #3f2b96, #a8c0ff);
-      background-size: 400% 400%;
-      animation: gradientShift 10s ease infinite;
+      font-family: 'Inter', sans-serif;
+      background-color: #1a1a2e;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-y: auto; /* biar bisa di-scroll */
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      overflow: hidden;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      align-items: flex-start; /* mulai dari atas */
     }
 
     @keyframes fadeInScale {
       0% { transform: scale(0.95); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
+    }
+
+    .card-content {
+      animation: fadeInScale 0.5s ease-out forwards;
     }
 
     @keyframes pulse {
@@ -42,20 +39,19 @@
       animation: pulse 1.5s infinite;
     }
 
-    #card-container {
-      opacity: 0;
-      transform: scale(0.95);
-      transition: all 0.6s ease;
+    /* biar konten bisa discroll dalam kartu */
+    #card-scroll {
+      max-height: 70vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #f472b6 #1a1a2e;
     }
-
-    #card-container.show {
-      opacity: 1;
-      transform: scale(1);
+    #card-scroll::-webkit-scrollbar {
+      width: 6px;
     }
-
-    .card-content {
-      opacity: 0;
-      animation: fadeInScale 0.6s ease forwards;
+    #card-scroll::-webkit-scrollbar-thumb {
+      background-color: #f472b6;
+      border-radius: 3px;
     }
   </style>
 </head>
@@ -67,59 +63,30 @@
   </audio>
 
   <!-- OPEN BUTTON -->
-  <button
-    id="open-button"
-    class="fixed z-20 px-8 py-4 bg-pink-600 text-white text-xl font-bold rounded-full shadow-2xl transition duration-300 hover:bg-pink-500 transform hover:scale-105"
-  >
+  <button id="open-button" class="fixed z-20 px-8 py-4 bg-pink-600 text-white text-xl font-bold rounded-full shadow-2xl transition duration-300 hover:bg-pink-500 transform hover:scale-105">
     Klik disini yaa sayanggg! 🎶
   </button>
 
   <!-- CARD -->
-  <div
-    id="card-container"
-    class="hidden relative max-w-lg mx-4 w-full bg-white bg-opacity-10 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl border border-pink-400 border-opacity-30 text-center z-10"
-  >
+  <div id="card-container" class="hidden relative max-w-lg mx-4 my-10 w-full bg-white bg-opacity-10 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl border border-pink-400 border-opacity-30 text-center z-10">
     <div class="mb-6">
-      <img
-        src="https://images.wondershare.com/filmora/article-images/2021/happy-birthday-to-you-minions.gif"
-        alt="Cute animated happy birthday GIF"
-        class="mx-auto w-32 h-32 rounded-full object-cover shadow-xl border-4 border-pink-400/50"
-      />
+      <img src="https://images.wondershare.com/filmora/article-images/2021/happy-birthday-to-you-minions.gif" alt="Cute animated happy birthday GIF" class="mx-auto w-32 h-32 rounded-full object-cover shadow-xl border-4 border-pink-400/50">
     </div>
 
     <!-- MUSIC TOGGLE -->
-    <button
-      id="music-toggle"
-      class="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition duration-200"
-      title="Toggle Music"
-    >
-      <svg
-        id="icon-muted"
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 5.343a1 1 0 010 1.414l-8 8a1 1 0 01-1.414-1.414l8-8a1 1 0 011.414 0z"
-          clip-rule="evenodd"
-        />
+    <button id="music-toggle" class="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition duration-200" title="Toggle Music">
+      <svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 5.343a1 1 0 010 1.414l-8 8a1 1 0 01-1.414-1.414l8-8a1 1 0 011.414 0z" clip-rule="evenodd" />
       </svg>
-      <svg
-        id="icon-playing"
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 hidden"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v4a1 1 0 11-2 0V8z"
-        />
+      <svg id="icon-playing" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v4a1 1 0 11-2 0V8z" />
       </svg>
     </button>
 
-    <div id="card-content" class="min-h-[250px] flex flex-col justify-between"></div>
+    <!-- Scrollable Content -->
+    <div id="card-scroll">
+      <div id="card-content" class="min-h-[250px] flex flex-col justify-between"></div>
+    </div>
 
     <div class="mt-8 flex justify-center">
       <div id="navigation-controls" class="flex space-x-3 w-full sm:w-auto items-center"></div>
@@ -133,19 +100,21 @@
       {
         title: "Happy Birthday! 🎂",
         subtitle: "To My Beloved Girlfriend!",
-        message:
-          "Selamat ulang tahun yang ke-24, Sayangg! Happy Level Up Day! 🎉 Nggak kerasa yaa sayanggg kamu udah ngerayain ultah kamu sama akuu 2 kali! Sekarang kamu udah 24 tahun, dan pastinya kamu ngalamin banyak perubahan baik dari tahun lalu. Aku harap semua kerja keras kamu selama ini mulai membuahkan hasil yang manis. Semoga di tahun ini semua impian kamu bisa satu per satu terwujud, dan pintu rezeki terbuka lebar buat kamu 💕",
+        message: "Selamat ulang tahun yang ke-24, Sayangg! 🎉 Nggak kerasa yaa sayanggg km udah ngerayain ultah kamu sama akuu 2 kalii tauuu!! Sekarang kamu udah 24 tahun, dan pastinya kamu ngalamin banyak perubahan baik dari tahun lalu. Aku harap semua kerja keras kamuu selama ini mulai membuahkan hasil yang manis. Semoga di tahun ini semua impian yang kamu simpan di kepala bisa satu per satu terwujud, dan pintu rezeki terbuka lebar buat kamuuu.",
+        signature: ""
       },
       {
+        title: "",
         subtitle: "Semangat Terus ya Sayanggggg! 💪",
-        message:
-          "Di umur ke-23 kamu udah banyak ngelewatin rintangan — dari kita yang nyiapin sidang bareng, revisian, sampe wisuda bareng. Meskipun aku jarang ada di samping kamu bahkan sering bikin kamu kecewa, tapi aku yakin kamu bisa ngelewatin itu semua... and you did it bebee!! Semoga di umur yang baru ini kamu makin dewasa, dan bisa menghadapi semua masalah yang akan datang 💗",
+        message: "Di umur ke-23 kamu udah banyak ngelewatin rintangan — dari kita yang nyiapin buat sidang bareng, revisian sampe wisudaa bareng! Meskipun aku jarang ada di samping kamu bahkan sering buat kecewa kamu, tapi aku yakin kamu bisa ngelewatin itu semuaa and you did it bebee!! Aku berharap semoga di umur kamu yang baru ini kamu bisa semakin dewasa, dan bisa melewati semua masalah yang akan ada nanti.",
+        signature: ""
       },
       {
-        message:
-          "Aku cuma pengin kamu selalu bahagia. Jangan banyak overthinking ya sayanggg! Ingat, kamu punya banyak support system (terutama aku, hihi!) yang selalu siap di belakangmu! Sekali lagi selamat ulang tahun yaa sayangg semogaaa kita bisa terus bareng dan happy terus, i'm so proud of you bebee 💕",
-        signature: "From your annoying boyfriend 🫶",
-      },
+        title: "",
+        subtitle: "",
+        message: "Aku berharap kamu selalu merasa bahagia. Jangan terlalu banyak overthinking ya sayangggg! Ingat, kamu punya banyak support system (terutama aku, hihi!) yang selalu siap di belakangmu! Sekali lagi selamat ulang tahun yaa sayangg 💖 semogaaa kita bisa terus membersamai dan jugaa happy terus sayanggg, i'm so proud of you bebeeee. Love You Sayangggg💕💕",
+        signature: "From your annoying boyfriend 🫶"
+      }
     ];
 
     const cardContentEl = document.getElementById("card-content");
@@ -157,23 +126,16 @@
     const openButtonEl = document.getElementById("open-button");
     const cardContainerEl = document.getElementById("card-container");
 
-    openButtonEl.addEventListener("click", async () => {
-      openButtonEl.classList.add("hidden");
+    // tombol buka
+    openButtonEl.addEventListener("click", () => {
       cardContainerEl.classList.remove("hidden");
-      setTimeout(() => cardContainerEl.classList.add("show"), 10);
-
+      openButtonEl.classList.add("hidden");
+      audioEl.play().catch(() => {});
+      confettiBurst();
       renderCardContent();
-      startConfetti(); // 🎊 Mulai efek confetti
-
-      try {
-        await audioEl.play();
-        iconMuted.classList.add("hidden");
-        iconPlaying.classList.remove("hidden");
-      } catch (err) {
-        console.warn("Autoplay prevented:", err);
-      }
     });
 
+    // toggle musik
     musicToggleBtn.addEventListener("click", () => {
       if (audioEl.paused) {
         audioEl.play();
@@ -186,28 +148,32 @@
       }
     });
 
+    // render kartu
     function renderCardContent() {
       const currentWish = wishes[currentPage];
       const isLastPage = currentPage === wishes.length - 1;
 
-      let html = "";
-      if (currentWish.title)
-        html += `<h1 class="card-content text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-red-600 mb-6">${currentWish.title}</h1>`;
-      if (currentWish.subtitle)
-        html += `<p class="card-content text-white text-2xl font-bold mb-4">${currentWish.subtitle}</p>`;
-      if (currentWish.message)
-        html += `<p class="card-content text-gray-200 text-base sm:text-lg mb-8 leading-relaxed">${currentWish.message}</p>`;
-      if (currentWish.signature)
-        html += `<p class="card-content text-pink-300 text-xl font-semibold italic">${currentWish.signature}</p>`;
+      cardContentEl.innerHTML = `
+        <h1 class="card-content text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-red-600 mb-6">${currentWish.title}</h1>
+        <p class="card-content text-white text-2xl font-bold mb-4">${currentWish.subtitle}</p>
+        <p class="card-content text-gray-200 text-lg mb-8 leading-relaxed">${currentWish.message}</p>
+        <p class="card-content text-pink-300 text-xl font-semibold italic">${currentWish.signature}</p>
+      `;
 
-      cardContentEl.innerHTML = html;
-
-      navigationControlsEl.innerHTML = isLastPage
-        ? `<button onclick="goToFirstWish()" class="px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-gray-900 font-bold rounded-full shadow-lg hover:scale-105 transition">🔄 Back To The First</button>`
-        : `
-          <button onclick="changeWish(-1)" ${currentPage === 0 ? 'disabled class="opacity-50 cursor-not-allowed px-4 py-2 bg-pink-600 text-white rounded-full"' : 'class="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-500 transition"'}>&larr; Previous</button>
+      let navHtml = "";
+      if (isLastPage) {
+        navHtml = `
+          <button onclick="goToFirstWish()" class="px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-gray-900 font-bold rounded-full shadow-lg hover:scale-105 transition">🔄 Back To The First</button>
+        `;
+      } else {
+        navHtml = `
+          <button onclick="changeWish(-1)" ${currentPage === 0
+            ? 'disabled class="opacity-50 cursor-not-allowed px-4 py-2 bg-pink-600 text-white rounded-full"'
+            : 'class="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-500 transition"'}>&larr; Previous</button>
           <button onclick="changeWish(1)" class="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-500 transition">Next &rarr;</button>
         `;
+      }
+      navigationControlsEl.innerHTML = navHtml;
     }
 
     function changeWish(direction) {
@@ -215,39 +181,23 @@
       if (newPage >= 0 && newPage < wishes.length) {
         currentPage = newPage;
         renderCardContent();
+        confettiBurst();
       }
     }
 
     function goToFirstWish() {
       currentPage = 0;
       renderCardContent();
+      confettiBurst();
     }
 
-    // 🎊 Efek Confetti
-    function startConfetti() {
-      const duration = 3 * 1000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
-
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-      }
-
-      const interval = setInterval(function () {
-        const timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        const particleCount = 50 * (timeLeft / duration);
-        confetti(
-          Object.assign({}, defaults, {
-            particleCount,
-            origin: { x: randomInRange(0, 1), y: Math.random() - 0.2 },
-          })
-        );
-      }, 250);
+    // confetti
+    function confettiBurst() {
+      confetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
     }
   </script>
 </body>
