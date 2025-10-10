@@ -10,7 +10,9 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a1a2e;
+            background: linear-gradient(135deg, #1a1a2e, #3f2b96, #a8c0ff);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,24 +20,15 @@
             margin: 0;
         }
 
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         @keyframes fadeInScale {
             0% { transform: scale(0.95); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.5) translateY(-50px); opacity: 0; }
-            60% { transform: scale(1.1) translateY(10px); opacity: 1; }
-            80% { transform: scale(0.9) translateY(-5px); }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        .card-content {
-            animation: fadeInScale 0.5s ease-out forwards;
-        }
-
-        .birthday-text {
-            animation: bounceIn 1.2s ease-out forwards;
         }
 
         @keyframes pulse {
@@ -46,12 +39,29 @@
         #open-button {
             animation: pulse 1.5s infinite;
         }
+
+        /* Fade in for card container */
+        #card-container {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.6s ease;
+        }
+
+        #card-container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .card-content {
+            opacity: 0;
+            animation: fadeInScale 0.6s ease forwards;
+        }
     </style>
 </head>
 <body>
 
     <!-- MUSIC -->
-    <audio id="background-music" loop muted>
+    <audio id="background-music" loop>
         <source src="Lany-no.m4a" type="audio/mp4">
         Your browser does not support the audio element.
     </audio>
@@ -92,19 +102,19 @@
             {
                 title: "Happy Birthday! 🎂",
                 subtitle: "To My Beloved Girlfriend!",
-                message: "Selamat ulang tahun yang ke-24, Sayangg! Happy Level Up Day! 🎉Nggak kerasa yaa sayanggg km udah ngerayain ultah kamu sama akuu 2 kalii tauuu!! sekarang kamu udah 24 tahun, dan pastinya kamu ngalamin banyak perubahan baik dari tahun lalu, aku harap semua kerja keras kamuu selama ini mulai membuahkan hasil yang manis. Semoga di tahun ini semua impian yang kamu simpan di kepala bisa satu per satu terwujud, dan pintu rezeki terbuka lebar buat kamuuu.",
+                message: "Selamat ulang tahun yang ke-24, Sayangg! Happy Level Up Day! 🎉 Nggak kerasa yaa sayanggg kamu udah ngerayain ultah kamu sama akuu 2 kalii tauuu!! Sekarang kamu udah 24 tahun, dan pastinya kamu ngalamin banyak perubahan baik dari tahun lalu. Aku harap semua kerja keras kamu selama ini mulai membuahkan hasil yang manis. Semoga di tahun ini semua impian kamu bisa satu per satu terwujud, dan pintu rezeki terbuka lebar buat kamu.",
                 signature: ""
             },
             {
                 title: "",
-                subtitle: "Semangat Terus ya Sayanggggg! ",
-                message: "Di Umur ke-23 kamu udah banyak ngelewatin rintangan, dari kita yang nyiapin buat sidang bareng, revisian sampe wisudaa kita bareng, meskipun aku jarang ada disamping kamu bahkan aku sering buat kecewa kamu, tapi aku yakin kamu bisa ngelewatin itu semuaa and you did it bebee!! aku berharap semoga di umur kamu yang baru ini kamu bisa semakin dewasa, dan aku harap kamu bisa melewati semua masalah yang akan ada nanti.",
+                subtitle: "Semangat Terus ya Sayanggggg! 💪",
+                message: "Di umur ke-23 kamu udah banyak ngelewatin rintangan — dari kita yang nyiapin sidang bareng, revisian, sampe wisuda bareng. Meskipun aku jarang ada di samping kamu bahkan sering bikin kamu kecewa, tapi aku yakin kamu bisa ngelewatin itu semua... and you did it bebee!! Semoga di umur yang baru ini kamu makin dewasa, dan bisa menghadapi semua masalah yang akan datang.",
                 signature: ""
             },
             {
                 title: "",
                 subtitle: "",
-                message: "Aku berharap kamu selalu merasa bahagia. Jangan terlalu banyak overthinking ya sayangggg! Ingat, kamu punya banyak support system (terutama aku, hihi!) yang selalu siap di belakangmu! Sekali lagi selamat Ulang tahun yaa sayangg semogaaa kita bisa terus membersamai dan jugaa happy terus sayanggg, i'm so proud of you bebeeee. Love You Sayangggg💕💕",
+                message: "Aku cuma pengin kamu selalu bahagia. Jangan banyak overthinking ya sayanggg! Ingat, kamu punya banyak support system (terutama aku, hihi!) yang selalu siap di belakangmu! Sekali lagi selamat ulang tahun yaa sayangg semogaaa kita bisa terus bareng dan happy terus, i'm so proud of you bebee 💕",
                 signature: "From your annoying boyfriend 🫶"
             }
         ];
@@ -118,12 +128,20 @@
         const openButtonEl = document.getElementById('open-button');
         const cardContainerEl = document.getElementById('card-container');
 
-        // 🎵 Open button event: tampilkan kartu & play musik
-        openButtonEl.addEventListener('click', () => {
-            cardContainerEl.classList.remove('hidden');
+        // 🎵 Ketika tombol diklik: tampilkan kartu & langsung play musik
+        openButtonEl.addEventListener('click', async () => {
             openButtonEl.classList.add('hidden');
-            audioEl.muted = false;
-            audioEl.play();
+            cardContainerEl.classList.remove('hidden');
+            setTimeout(() => cardContainerEl.classList.add('show'), 10);
+
+            try {
+                await audioEl.play();
+                iconMuted.classList.add('hidden');
+                iconPlaying.classList.remove('hidden');
+            } catch (err) {
+                console.warn('Autoplay prevented:', err);
+            }
+
             renderCardContent();
         });
 
@@ -146,13 +164,13 @@
             const isLastPage = currentPage === wishes.length - 1;
 
             cardContentEl.innerHTML = `
-                <h1 class="card-content text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-red-600 mb-6">${currentWish.title}</h1>
+                <h1 class="card-content text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-red-600 mb-6">${currentWish.title}</h1>
                 <p class="card-content text-white text-2xl font-bold mb-4">${currentWish.subtitle}</p>
-                <p class="card-content text-gray-200 text-lg mb-8 leading-relaxed">${currentWish.message}</p>
+                <p class="card-content text-gray-200 text-base sm:text-lg mb-8 leading-relaxed">${currentWish.message}</p>
                 <p class="card-content text-pink-300 text-xl font-semibold italic">${currentWish.signature}</p>
             `;
 
-            // tombol navigasi
+            // Tombol navigasi
             let navHtml = '';
             if (isLastPage) {
                 navHtml = `
@@ -169,11 +187,14 @@
         }
 
         function changeWish(direction) {
-            const newPage = currentPage + direction;
-            if (newPage >= 0 && newPage < wishes.length) {
-                currentPage = newPage;
-                renderCardContent();
-            }
+            cardContentEl.style.opacity = 0;
+            setTimeout(() => {
+                const newPage = currentPage + direction;
+                if (newPage >= 0 && newPage < wishes.length) {
+                    currentPage = newPage;
+                    renderCardContent();
+                }
+            }, 200);
         }
 
         function goToFirstWish() {
@@ -183,5 +204,3 @@
     </script>
 </body>
 </html>
-
-
