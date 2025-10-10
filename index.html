@@ -13,12 +13,12 @@
       font-family: 'Inter', sans-serif;
       background-color: #1a1a2e;
       margin: 0;
-      padding: 0;
+      padding: 40px 0;
       min-height: 100vh;
-      overflow-y: auto; /* biar bisa di-scroll */
+      overflow-y: auto; /* scroll via browser */
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* mulai dari atas */
+      align-items: flex-start;
     }
 
     @keyframes fadeInScale {
@@ -27,7 +27,7 @@
     }
 
     .card-content {
-      animation: fadeInScale 0.5s ease-out forwards;
+      animation: fadeInScale 0.6s ease-out forwards;
     }
 
     @keyframes pulse {
@@ -37,21 +37,6 @@
 
     #open-button {
       animation: pulse 1.5s infinite;
-    }
-
-    /* biar konten bisa discroll dalam kartu */
-    #card-scroll {
-      max-height: 70vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #f472b6 #1a1a2e;
-    }
-    #card-scroll::-webkit-scrollbar {
-      width: 6px;
-    }
-    #card-scroll::-webkit-scrollbar-thumb {
-      background-color: #f472b6;
-      border-radius: 3px;
     }
   </style>
 </head>
@@ -64,11 +49,11 @@
 
   <!-- OPEN BUTTON -->
   <button id="open-button" class="fixed z-20 px-8 py-4 bg-pink-600 text-white text-xl font-bold rounded-full shadow-2xl transition duration-300 hover:bg-pink-500 transform hover:scale-105">
-    Klik disini yaa sayanggg!
+    Klik disini yaa sayanggg! 🎶
   </button>
 
   <!-- CARD -->
-  <div id="card-container" class="hidden relative max-w-lg mx-4 my-10 w-full bg-white bg-opacity-10 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl border border-pink-400 border-opacity-30 text-center z-10">
+  <div id="card-container" class="hidden relative max-w-lg mx-4 w-full bg-white bg-opacity-10 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl border border-pink-400 border-opacity-30 text-center z-10">
     <div class="mb-6">
       <img src="https://images.wondershare.com/filmora/article-images/2021/happy-birthday-to-you-minions.gif" alt="Cute animated happy birthday GIF" class="mx-auto w-32 h-32 rounded-full object-cover shadow-xl border-4 border-pink-400/50">
     </div>
@@ -83,10 +68,7 @@
       </svg>
     </button>
 
-    <!-- Scrollable Content -->
-    <div id="card-scroll">
-      <div id="card-content" class="min-h-[250px] flex flex-col justify-between"></div>
-    </div>
+    <div id="card-content" class="min-h-[250px] flex flex-col justify-between"></div>
 
     <div class="mt-8 flex justify-center">
       <div id="navigation-controls" class="flex space-x-3 w-full sm:w-auto items-center"></div>
@@ -126,16 +108,20 @@
     const openButtonEl = document.getElementById("open-button");
     const cardContainerEl = document.getElementById("card-container");
 
-    // tombol buka
+    // 🎵 Buka kartu
     openButtonEl.addEventListener("click", () => {
       cardContainerEl.classList.remove("hidden");
       openButtonEl.classList.add("hidden");
+
       audioEl.play().catch(() => {});
+      iconMuted.classList.add("hidden");
+      iconPlaying.classList.remove("hidden");
+
       confettiBurst();
       renderCardContent();
     });
 
-    // toggle musik
+    // 🎧 Toggle musik
     musicToggleBtn.addEventListener("click", () => {
       if (audioEl.paused) {
         audioEl.play();
@@ -148,7 +134,7 @@
       }
     });
 
-    // render kartu
+    // 🧡 Render isi kartu
     function renderCardContent() {
       const currentWish = wishes[currentPage];
       const isLastPage = currentPage === wishes.length - 1;
@@ -182,6 +168,7 @@
         currentPage = newPage;
         renderCardContent();
         confettiBurst();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
 
@@ -189,9 +176,10 @@
       currentPage = 0;
       renderCardContent();
       confettiBurst();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // confetti
+    // 🎊 Efek confetti
     function confettiBurst() {
       confetti({
         particleCount: 120,
